@@ -1,7 +1,9 @@
 # src/ui/playback_controls.py
-
+from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+
+Builder.load_file('../styles/style.kv')  # Adjust the path as needed
 
 class PlaybackControlPanel(BoxLayout):
     def __init__(self, spotify_client, main_screen, **kwargs):
@@ -10,22 +12,23 @@ class PlaybackControlPanel(BoxLayout):
         self.spotify_client = spotify_client
         self.main_screen = main_screen  # Store the main_screen reference
 
-        play_button = Button(text="Play")
-        play_button.bind(on_press=self.play)
+        # Add control buttons
+        self.previous_button = Button(text="Previous")
+        self.previous_button.bind(on_press=self.previous_track)
 
-        pause_button = Button(text="Pause")
-        pause_button.bind(on_press=self.pause)
+        self.play_button = Button(text="Play")
+        self.play_button.bind(on_press=self.play)
 
-        next_button = Button(text="Next")
-        next_button.bind(on_press=self.next_track)
+        self.pause_button = Button(text="Pause")
+        self.pause_button.bind(on_press=self.pause)
 
-        prev_button = Button(text="Previous")
-        prev_button.bind(on_press=self.previous_track)
+        self.next_button = Button(text="Next")
+        self.next_button.bind(on_press=self.next_track)
 
-        self.add_widget(prev_button)
-        self.add_widget(play_button)
-        self.add_widget(pause_button)
-        self.add_widget(next_button)
+        self.add_widget(self.previous_button)
+        self.add_widget(self.play_button)
+        self.add_widget(self.pause_button)
+        self.add_widget(self.next_button)
 
     def play(self, instance):
         self.spotify_client.play()

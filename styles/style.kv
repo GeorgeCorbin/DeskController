@@ -1,114 +1,57 @@
-<MainScreen>:
-    orientation: "vertical"
-    canvas.before:
-        Color:
-            rgba: 0.1, 0.1, 0.1, 1  # Dark background
-        Rectangle:
-            size: self.size
-            pos: self.pos
+#:import rgb kivy.utils.get_color_from_hex
 
-    # Top layout for the logout button
-    AnchorLayout:
-        id: top_layout
-        anchor_x: "right"
-        anchor_y: "top"
-        Button:
-            id: logout_button
-            text: "Logout"
-            size_hint: None, None
-            size: dp(100), dp(40)
-            background_color: 0.5, 0.1, 0.1, 1  # Red for logout
-            color: 1, 1, 1, 1  # White text
+<TopBar>:
+    size_hint_y: 0.1
+    padding: [10, 5]
+    spacing: 10
+    Button:
+        font_size: '16sp'
+        bold: True
 
-    # Track info panel
-    BoxLayout:
-        id: track_info_panel
-        orientation: "vertical"
-        size_hint_y: 0.4
-        padding: dp(20)
-        Label:
-            id: track_label
-            text: "Track Name - Artist"
-            font_size: '20sp'
-            color: 1, 1, 1, 1  # White text
-            bold: True
-            halign: "center"
-            valign: "middle"
+<PlaylistSection>:
+    size_hint_y: 0.6
+    padding: [10, 5]
+    spacing: 5
 
-    # Playback control panel
-    BoxLayout:
-        id: playback_control_panel
-        orientation: "horizontal"
-        size_hint_y: 0.2
-        spacing: dp(20)
-        padding: dp(20)
-        Button:
-            id: previous_button
-            text: "Previous"
-            font_size: '30sp'
-            size_hint: None, None
-            size: dp(50), dp(50)
-            background_color: 0.2, 0.2, 0.2, 1
-            color: 1, 1, 1, 1
+<PlaylistLabel>:
+    font_size: '18sp'
+    bold: True
+    halign: 'left'
+    valign: 'middle'
+    size_hint_y: None
+    height: self.texture_size[1] + 10
 
-        Button:
-            id: play_pause_button
-            text: "Play"
-            font_size: '30sp'
-            size_hint: None, None
-            size: dp(60), dp(60)
-            background_color: 0.2, 0.2, 0.2, 1
-            color: 1, 1, 1, 1
+<ScrollablePlaylist>:
+    do_scroll_x: False
 
-        Button:
-            id: play_pause_button
-            text: "Pause"
-            font_size: '30sp'
-            size_hint: None, None
-            size: dp(60), dp(60)
-            background_color: 0.2, 0.2, 0.2, 1
-            color: 1, 1, 1, 1
+<PlaylistButton>:
+    font_size: '14sp'
+    size_hint_y: None
+    height: 40
 
-        Button:
-            id: next_button
-            text: "Next"
-            font_size: '30sp'
-            size_hint: None, None
-            size: dp(50), dp(50)
-            background_color: 0.2, 0.2, 0.2, 1
-            color: 1, 1, 1, 1
+<NowPlayingSection>:
+    orientation: 'horizontal'
+    size_hint_y: 0.3
+    padding: [10, 5]
+    spacing: 10
 
-    # Volume control panel
-    BoxLayout:
-        id: volume_control_panel
-        orientation: "horizontal"
-        size_hint_y: 0.1
-        spacing: dp(10)
-        padding: dp(20)
-        Label:
-            id: current_time_label
-            text: "0:00"
-            color: 1, 1, 1, 1
-            font_size: '14sp'
-            size_hint_x: None
-            width: dp(40)
+<NowPlayingLabel>:
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.size
+    font_size: '16sp'
+    bold: True
+    size_hint_x: 0.7
 
-        Slider:
-            id: volume_slider
-            min: 0
-            max: 100
-            value: 100
-            step: 1
-            size_hint_y: None
-            height: dp(10)
-            background_color: 0.3, 0.3, 0.3, 1
-            cursor_color: 1, 1, 1, 1  # White handle
-            cursor_size: dp(16), dp(16)
+<ControlButton>:
+    font_size: '14sp'
+    size_hint_x: None
+    width: 40
 
-        Label:
-            id: total_time_label
-            text: "-0:00"
-            color: 1, 1, 1, 1
-            font_size: '14sp'
-            size_hint_x: None
-            width: dp(40)
+<TrackInfoPanel>:
+    orientation: 'vertical'
+    spacing: 10
+    padding: 10
+    Label:
+        font_size: '24sp'
+        color: rgb('#FF0000')  # Red color
