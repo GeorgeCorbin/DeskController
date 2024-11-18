@@ -1,22 +1,114 @@
-# styles/style.kv
+<MainScreen>:
+    orientation: "vertical"
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1  # Dark background
+        Rectangle:
+            size: self.size
+            pos: self.pos
 
-<Button>:
-    font_size: 48  # Button font size from UI_LAYOUT
-    color: 1, 1, 1, 1
-    background_color: 0.3, 0.3, 0.3, 1  # Button background color from THEME
+    # Top layout for the logout button
+    AnchorLayout:
+        id: top_layout
+        anchor_x: "right"
+        anchor_y: "top"
+        Button:
+            id: logout_button
+            text: "Logout"
+            size_hint: None, None
+            size: dp(100), dp(40)
+            background_color: 0.5, 0.1, 0.1, 1  # Red for logout
+            color: 1, 1, 1, 1  # White text
 
-<PlaybackControlPanel>:
-    padding: 100
-    spacing: 10
+    # Track info panel
+    BoxLayout:
+        id: track_info_panel
+        orientation: "vertical"
+        size_hint_y: 0.4
+        padding: dp(20)
+        Label:
+            id: track_label
+            text: "Track Name - Artist"
+            font_size: '20sp'
+            color: 1, 1, 1, 1  # White text
+            bold: True
+            halign: "center"
+            valign: "middle"
 
-<TrackInfoPanel>:
-    size_hint_y: 0.3
-    padding: 10
-    Label:
-        font_size: 24  # Track info font size from UI_LAYOUT
-        color: 0.8, 0.8, 0.8, 1
+    # Playback control panel
+    BoxLayout:
+        id: playback_control_panel
+        orientation: "horizontal"
+        size_hint_y: 0.2
+        spacing: dp(20)
+        padding: dp(20)
+        Button:
+            id: previous_button
+            text: "Previous"
+            font_size: '30sp'
+            size_hint: None, None
+            size: dp(50), dp(50)
+            background_color: 0.2, 0.2, 0.2, 1
+            color: 1, 1, 1, 1
 
-<VolumeControlPanel>:
-    slider_color_active: 0, 0.6, 0.8, 1
-    slider_color_inactive: 0.5, 0.5, 0.5, 1
+        Button:
+            id: play_pause_button
+            text: "Play"
+            font_size: '30sp'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            background_color: 0.2, 0.2, 0.2, 1
+            color: 1, 1, 1, 1
 
+        Button:
+            id: play_pause_button
+            text: "Pause"
+            font_size: '30sp'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            background_color: 0.2, 0.2, 0.2, 1
+            color: 1, 1, 1, 1
+
+        Button:
+            id: next_button
+            text: "Next"
+            font_size: '30sp'
+            size_hint: None, None
+            size: dp(50), dp(50)
+            background_color: 0.2, 0.2, 0.2, 1
+            color: 1, 1, 1, 1
+
+    # Volume control panel
+    BoxLayout:
+        id: volume_control_panel
+        orientation: "horizontal"
+        size_hint_y: 0.1
+        spacing: dp(10)
+        padding: dp(20)
+        Label:
+            id: current_time_label
+            text: "0:00"
+            color: 1, 1, 1, 1
+            font_size: '14sp'
+            size_hint_x: None
+            width: dp(40)
+
+        Slider:
+            id: volume_slider
+            min: 0
+            max: 100
+            value: 100
+            step: 1
+            size_hint_y: None
+            height: dp(10)
+            background_color: 0.3, 0.3, 0.3, 1
+            cursor_color: 1, 1, 1, 1  # White handle
+            cursor_size: dp(16), dp(16)
+
+        Label:
+            id: total_time_label
+            text: "-0:00"
+            color: 1, 1, 1, 1
+            font_size: '14sp'
+            size_hint_x: None
+            width: dp(40)

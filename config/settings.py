@@ -15,7 +15,7 @@ SPOTIFY_REDIRECT_URI = secrets["SPOTIFY_REDIRECT_URI"]
 SPOTIFY_SCOPES = secrets["SPOTIFY_SCOPES"]
 
 # Default Volume Settings
-DEFAULT_VOLUME = 50  # Default volume level on startup (range: 0 to 100)
+DEFAULT_VOLUME = 100  # Default volume level on startup (range: 0 to 100)
 
 # Playback Settings
 AUTO_PLAY_ON_STARTUP = False  # Set to True to auto-play music when the app starts
