@@ -21,8 +21,8 @@ class MainScreen(Screen):
         self.name = "main"
         self.app_manager = app_manager
         self.spotify_client = SpotifyClient()
-        self.spotify_client.register_device()  # Register the device
-        self.spotify_client.transfer_playback(device_id="a535e4387c29e4c2b6f1f1e11bc93f4f39a2645a")
+        # self.spotify_client.register_device()  # Register the device
+        # self.spotify_client.transfer_playback(device_id="a535e4387c29e4c2b6f1f1e11bc93f4f39a2645a")
 
         # Main layout
         self.layout = BoxLayout(orientation="vertical", spacing=10, padding=10)
@@ -31,7 +31,7 @@ class MainScreen(Screen):
 
         # Add settings button
         self.settings_button = Button(text="Settings", size_hint=(None, None), size=(100, 50), pos_hint={'right': 1, 'top': 1})
-        self.settings_button.bind(on_press=self.go_to_wifi_settings)
+        self.settings_button.bind(on_press=self.go_to_settings_screen)
         self.add_widget(self.settings_button)
 
         # Only add the panels if they are not already in the layout
@@ -41,11 +41,24 @@ class MainScreen(Screen):
             self.ids['track_info_panel'] = self.track_info_panel
             print("TrackInfoPanel added.")
 
+        # Add Album Art and Track Info
+        self.album_art_layout = self.track_info_panel.album_art_layout
+        self.track_label = self.track_info_panel.track_label
+        self.layout.add_widget(self.album_art_layout)
+        self.layout.add_widget(self.track_label)
+        print("Album Art and Track Info added.")
+
+        # Add playback control panel
         if 'playback_panel' not in self.ids:
             self.playback_panel = PlaybackControlPanel(self.spotify_client, self)
             self.layout.add_widget(self.playback_panel)
             self.ids['playback_panel'] = self.playback_panel
             print("PlaybackControlPanel added.")
+
+        # Add progress bar and time labels
+        self.progress_layout = self.track_info_panel.progress_layout
+        self.layout.add_widget(self.progress_layout)
+        print("Progress bar and time labels added.")
 
         if 'volume_control' not in self.ids:
             self.volume_control = VolumeControlPanel(self.spotify_client)
@@ -57,8 +70,8 @@ class MainScreen(Screen):
         # Schedule initial track info update
         self.update_track_info(0)
 
-    def go_to_wifi_settings(self, instance):
-        self.manager.current = "wifi_settings"
+    def go_to_settings_screen(self, instance):
+        self.manager.current = "settings_screen"
 
     def update_track_info(self, dt):
         self.track_info_panel.update_track_info(dt)

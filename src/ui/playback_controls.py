@@ -40,9 +40,6 @@ class PlaybackControlPanel(BoxLayout):
         self.spotify_client.pause()
         print("Pause button clicked")
         self.main_screen.stop_update_track_info()  # Stop updating track info after clicking pause
-        if self.main_screen.track_info_panel.update_event:
-            Clock.unschedule(self.main_screen.track_info_panel.update_event)  # Stop updating track info after clicking pause
-            self.main_screen.track_info_panel.update_event = None
 
     def next_track(self, instance):
         self.spotify_client.next_track()

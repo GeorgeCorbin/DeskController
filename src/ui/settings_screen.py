@@ -12,7 +12,7 @@ from kivy.uix.spinner import Spinner
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.name = "wifi_settings"
+        self.name = "settings_screen"
 
         layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
 
