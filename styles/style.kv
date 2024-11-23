@@ -1,53 +1,5 @@
 #:import rgb kivy.utils.get_color_from_hex
 
-<TopBar>:
-    size_hint_y: 0.1
-    padding: [10, 5]
-    spacing: 10
-    Button:
-        font_size: '16sp'
-        bold: True
-
-<PlaylistSection>:
-    size_hint_y: 0.6
-    padding: [10, 5]
-    spacing: 5
-
-<PlaylistLabel>:
-    font_size: '18sp'
-    bold: True
-    halign: 'left'
-    valign: 'middle'
-    size_hint_y: None
-    height: self.texture_size[1] + 10
-
-<ScrollablePlaylist>:
-    do_scroll_x: False
-
-<PlaylistButton>:
-    font_size: '14sp'
-    size_hint_y: None
-    height: 40
-
-<NowPlayingSection>:
-    orientation: 'horizontal'
-    size_hint_y: 0.3
-    padding: [10, 5]
-    spacing: 10
-
-<NowPlayingLabel>:
-    halign: 'left'
-    valign: 'middle'
-    text_size: self.size
-    font_size: '16sp'
-    bold: True
-    size_hint_x: 0.7
-
-<ControlButton>:
-    font_size: '14sp'
-    size_hint_x: None
-    width: 40
-
 <TrackInfoPanel>:
     orientation: 'vertical'
     spacing: 10

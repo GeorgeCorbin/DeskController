@@ -1,5 +1,5 @@
 # src/ui/app_ui.py
-
+from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -8,6 +8,7 @@ from kivy.lang import Builder
 
 from src.ui.login_screen import LoginScreen
 from src.spotify_client import SpotifyClient
+from src.ui.settings_screen import SettingsScreen
 from src.ui.track_info import TrackInfoPanel
 from src.ui.volume_control import VolumeControlPanel
 from src.ui.playback_controls import PlaybackControlPanel
@@ -20,11 +21,18 @@ class MainScreen(Screen):
         self.name = "main"
         self.app_manager = app_manager
         self.spotify_client = SpotifyClient()
+        self.spotify_client.register_device()  # Register the device
+        self.spotify_client.transfer_playback(device_id="a535e4387c29e4c2b6f1f1e11bc93f4f39a2645a")
 
         # Main layout
         self.layout = BoxLayout(orientation="vertical", spacing=10, padding=10)
         self.add_widget(self.layout)
         print("MainScreen layout added to screen.")
+
+        # Add settings button
+        self.settings_button = Button(text="Settings", size_hint=(None, None), size=(100, 50), pos_hint={'right': 1, 'top': 1})
+        self.settings_button.bind(on_press=self.go_to_wifi_settings)
+        self.add_widget(self.settings_button)
 
         # Only add the panels if they are not already in the layout
         if 'track_info_panel' not in self.ids:
@@ -48,6 +56,9 @@ class MainScreen(Screen):
 
         # Schedule initial track info update
         self.update_track_info(0)
+
+    def go_to_wifi_settings(self, instance):
+        self.manager.current = "wifi_settings"
 
     def update_track_info(self, dt):
         self.track_info_panel.update_track_info(dt)
@@ -95,9 +106,11 @@ class AudioControllerApp(ScreenManager):
         # Initialize login and main screens
         self.login_screen = LoginScreenWrapper(app_manager=self)
         self.main_screen = MainScreen(app_manager=self)
+        self.settings_screen = SettingsScreen()
 
         self.add_widget(self.login_screen)
         self.add_widget(self.main_screen)
+        self.add_widget(self.settings_screen)
 
         # Set initial screen to login and start authentication check
         self.current = "login"
@@ -113,7 +126,7 @@ class AudioControllerApp(ScreenManager):
         if os.path.exists("auth_complete.flag"):
             print("Authentication flag detected. Switching to main screen.")
             self.current = "main"
-            # os.remove("auth_complete.flag")  # Remove the flag file after detection
+            os.remove("auth_complete.flag")  # Remove the flag file after detection
             Clock.unschedule(self.auth_check_event)  # Stop further checks
 
     def on_stop(self):

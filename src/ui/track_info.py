@@ -3,7 +3,7 @@
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.uix.image import Image
+from kivy.uix.image import Image, AsyncImage
 from kivy.uix.progressbar import ProgressBar
 from kivy.clock import Clock
 
@@ -15,8 +15,12 @@ class TrackInfoPanel(BoxLayout):
         self.spotify_client = spotify_client
 
         # Add album art and track info
-        self.album_art = Image(source="assets/images/placeholder.png")
+        self.album_art = Image(source="../assets/images/placeholder.png", size=(300, 300), size_hint=(None, None))
         self.track_label = Label(text="Track Title - Artist", font_size=20, halign="center")
+
+        # Center the album art
+        self.album_art_layout = BoxLayout(size_hint=(1, None), height=300)
+        self.album_art_layout.add_widget(self.album_art)
 
         # Add progress bar and time labels
         self.progress_bar = ProgressBar(max=1000)
@@ -29,12 +33,19 @@ class TrackInfoPanel(BoxLayout):
         self.progress_layout.add_widget(self.progress_bar)
         self.progress_layout.add_widget(self.total_time_label)
 
-        self.add_widget(self.album_art)
+        self.add_widget(self.album_art_layout)
         self.add_widget(self.track_label)
         self.add_widget(self.progress_layout)
 
         # Schedule updates
-        Clock.schedule_interval(self.update_track_info, 1)
+        self.update_event = None
+        self.schedule_update()
+
+    def schedule_update(self):
+        """Schedule the update if a track is playing."""
+        if self.update_event:
+            Clock.unschedule(self.update_event)
+        self.update_event = Clock.schedule_interval(self.update_track_info, 1)
 
     def update_track_info(self, dt):
         """Update displayed track info."""
@@ -44,9 +55,10 @@ class TrackInfoPanel(BoxLayout):
             artist_names = ", ".join([artist["name"] for artist in track["artists"]])
             track_name = track["name"]
             self.track_label.text = f"{track_name} - {artist_names}"
-            album_art_url = track["album"]["images"][0]["url"]
-            self.album_art.source = album_art_url
-            self.album_art.reload()
+            album_art_url = self.spotify_client.get_album_art_url()
+            print("Art", album_art_url)
+            # self.album_art = AsyncImage(source=album_art_url)
+            # self.album_art.reload()
 
             # Update progress bar and time labels
             track_duration_ms = track["duration_ms"]
@@ -56,7 +68,7 @@ class TrackInfoPanel(BoxLayout):
             self.total_time_label.text = self.format_time(track_duration_ms)
         else:
             self.track_label.text = "No track playing"
-            self.album_art.source = "assets/images/placeholder.png"
+            # self.album_art.source = "../assets/images/placeholder.png"
             self.progress_bar.value = 0
             self.time_left_label.text = "0:00"
             self.total_time_label.text = "0:00"
