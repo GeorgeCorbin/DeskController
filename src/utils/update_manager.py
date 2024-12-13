@@ -2,11 +2,14 @@ import os
 import requests
 from datetime import datetime
 
+# GITHUB_TOKEN = os.getenv("GH_TOKEN")  # Load token from environment
 UPDATE_URL = "https://raw.githubusercontent.com/georgecorbin/DeskController/main/updates"
 UPDATE_LOG = "update_log.txt"
+# HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 def check_for_updates():
     """Check if a new update is available."""
+    # response = requests.get(UPDATE_URL, headers=HEADERS)
     try:
         response = requests.get(f"{UPDATE_URL}/version.txt")
         response.raise_for_status()
