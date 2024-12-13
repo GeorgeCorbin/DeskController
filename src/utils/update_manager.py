@@ -5,7 +5,7 @@ import tempfile
 from datetime import datetime
 from packaging.version import parse  # For robust version comparison
 
-UPDATE_URL = "https://raw.githubusercontent.com/georgecorbin/DeskController/main/updates"
+UPDATE_URL = "https://raw.githubusercontent.com/georgecorbin/DeskController/updates"
 UPDATE_LOG = "update_log.txt"
 INSTALLATION_PATH = "/usr/local/DeskController"
 
