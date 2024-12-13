@@ -2,6 +2,7 @@
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
 import os
 from kivy.lang import Builder
@@ -20,7 +21,7 @@ class MainScreen(Screen):
         super().__init__(**kwargs)
         self.name = "main"
         self.app_manager = app_manager
-        self.spotify_client = SpotifyClient()
+        self.spotify_client = None
         # self.spotify_client.register_device()  # Register the device
         # self.spotify_client.transfer_playback(device_id="a535e4387c29e4c2b6f1f1e11bc93f4f39a2645a")
 
@@ -29,10 +30,22 @@ class MainScreen(Screen):
         self.add_widget(self.layout)
         print("MainScreen layout added to screen.")
 
-        # Add settings button
-        self.settings_button = Button(text="Settings", size_hint=(None, None), size=(100, 50), pos_hint={'right': 1, 'top': 1})
+        # Add settings and logout buttons in the top right corner
+        self.button_layout = BoxLayout(orientation="horizontal", size_hint=(None, None), size=(200, 50))
+        self.settings_button = Button(text="Settings", size_hint=(None, None), size=(100, 50))
         self.settings_button.bind(on_press=self.go_to_settings_screen)
-        self.add_widget(self.settings_button)
+        self.logout_button = Button(text="Logout", size_hint=(None, None), size=(100, 50))
+        self.logout_button.bind(on_press=self.logout)
+        self.button_layout.add_widget(self.settings_button)
+        self.button_layout.add_widget(self.logout_button)
+
+        self.anchor_layout = AnchorLayout(anchor_x='right', anchor_y='top')
+        self.anchor_layout.add_widget(self.button_layout)
+        self.layout.add_widget(self.anchor_layout)
+
+    def initialize_spotify_client(self):
+        """Initialize the Spotify client after successful login."""
+        self.spotify_client = SpotifyClient()
 
         # Only add the panels if they are not already in the layout
         if 'track_info_panel' not in self.ids:
@@ -93,8 +106,9 @@ class MainScreen(Screen):
         """Handle logout by deleting the token file and resetting to the login screen."""
         try:
             # Delete the token file and the flag file to effectively log out
-            if os.path.exists("spotify_tokens.json"):
-                os.remove("spotify_tokens.json")
+            token_file_path = "spotify_tokens.json"
+            if os.path.exists(token_file_path):
+                os.remove(token_file_path)
             if os.path.exists("auth_complete.flag"):
                 os.remove("auth_complete.flag")
         except Exception as e:
@@ -139,6 +153,7 @@ class AudioControllerApp(ScreenManager):
         if os.path.exists("auth_complete.flag"):
             print("Authentication flag detected. Switching to main screen.")
             self.current = "main"
+            self.main_screen.initialize_spotify_client()  # Initialize Spotify client after login
             os.remove("auth_complete.flag")  # Remove the flag file after detection
             Clock.unschedule(self.auth_check_event)  # Stop further checks
 
