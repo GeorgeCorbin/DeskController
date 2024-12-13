@@ -1,0 +1,51 @@
+name: DeskController Update Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # Step 4: Build the project (optional, customize as needed)
+      - name: Package the application
+        run: |
+          mkdir -p build
+          tar -czf build/DeskController.tar.gz .
+
+      # Step 5: Update version file
+      - name: Update version file
+        run: echo "$(date +%Y%m%d%H%M%S)" > build/version.txt
+
+      # Step 6: Upload artifacts for updates
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: deskcontroller-update
+          path: build/
+      
+      # Step 7: Deploy to GitHub repository (optional)
+      - name: Deploy to updates folder
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: updates
