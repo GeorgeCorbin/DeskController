@@ -8,6 +8,7 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.spinner import Spinner
+from src.utils.update_manager import check_for_updates, apply_update
 
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
@@ -23,6 +24,9 @@ class SettingsScreen(Screen):
         save_button = Button(text="Save", on_press=self.save_wifi_settings)
         back_button = Button(text="Back", on_press=self.go_back)
 
+        # Button to check for updates
+        update_button = Button(text="Check for Updates", size_hint=(None, None), size=(200, 50), pos_hint={"center_x": 0.5, "center_y": 0.5})
+
         layout.add_widget(Label(text="WiFi Settings", font_size=24))
         layout.add_widget(self.ssid_input)
         layout.add_widget(self.password_input)
@@ -32,6 +36,10 @@ class SettingsScreen(Screen):
         self.bluetooth_spinner = Spinner(text="Select Bluetooth Device", values=[])
         scan_button = Button(text="Scan for Devices", on_press=self.scan_bluetooth_devices)
         connect_button = Button(text="Connect", on_press=self.connect_bluetooth_device)
+
+        # Updates button
+        update_button.bind(on_press=self.check_updates)
+        self.add_widget(update_button)
 
         layout.add_widget(Label(text="Bluetooth Settings", font_size=24))
         layout.add_widget(self.bluetooth_spinner)
@@ -98,3 +106,12 @@ class SettingsScreen(Screen):
 
     def go_back(self, instance):
         self.manager.current = "main"
+
+    def check_updates(self, instance):
+        """Manually check for updates."""
+        is_available, version = check_for_updates()
+        if is_available:
+            print(f"New update available: {version}. Applying...")
+            apply_update()
+        else:
+            print("No updates available.")
