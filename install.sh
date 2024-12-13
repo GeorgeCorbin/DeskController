@@ -61,5 +61,15 @@ else
     echo "Skipping autostart configuration."
 fi
 
+# 7. Add virtual environment activation and PYTHONPATH to shell profile
+SHELL_PROFILE="$HOME/.bashrc"
+if [ -n "$ZSH_VERSION" ]; then
+    SHELL_PROFILE="$HOME/.zshrc"
+fi
+
+echo "source $(pwd)/deskcontroller_env/bin/activate" >> $SHELL_PROFILE
+echo "export PYTHONPATH=$(pwd)" >> $SHELL_PROFILE
+echo "Virtual environment activation and PYTHONPATH added to $SHELL_PROFILE"
+
 echo "Installation complete. To start DeskController manually, run:"
 echo "source deskcontroller_env/bin/activate && python3 src/main.py"
