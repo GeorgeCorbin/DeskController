@@ -32,11 +32,22 @@ No more looking at your phone to change the music and losing your focus. No more
 - Add playlist section to select songs from user's library
 - Add search functionality to search for songs
 - Add other music services (Apple Music, Amazon Music, etc.) for playback using respective OAuths
+- Make it so the application does not continuously update when the play bar is not being used/shown
 
 #### Ideas:
 - Add a settings menu for changing the theme of the UI
 - Create log in page for personal account that is connected with all services already
 - NFC reader to touch phone to player to automatically login with account to connect music services
+
+## Important Notes
+- After cloning repo you must run `install.sh` to install dependencies and setup the project
+- In order to run install.sh you must have read, write, execute permissions on the DeskController directory
+  - Run `chmod u+wrx` to give the directory permissions (may have to run as sudo)
+- You must have a Spotify Developer account to use the Spotify API
+  - Create a new app in the Spotify Developer Dashboard
+  - Add `http://localhost:8080` as a Redirect URI in the app settings
+  - Copy the Client ID and Client Secret into to your `.env` file
+- Updates are set to pull from /usr/local so make sure that is where the repository is located
 
 ```
 AudioController/
