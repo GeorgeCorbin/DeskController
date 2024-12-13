@@ -3,7 +3,7 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv('.env')
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 # Spotify OAuth Credentials
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
