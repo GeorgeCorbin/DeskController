@@ -1,22 +1,23 @@
 import os
 import requests
+import tarfile
+import tempfile
 from datetime import datetime
+from packaging.version import parse  # For robust version comparison
 
-# GITHUB_TOKEN = os.getenv("GH_TOKEN")  # Load token from environment
 UPDATE_URL = "https://raw.githubusercontent.com/georgecorbin/DeskController/main/updates"
 UPDATE_LOG = "update_log.txt"
-# HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
+INSTALLATION_PATH = "/usr/local/DeskController"
 
 def check_for_updates():
     """Check if a new update is available."""
-    # response = requests.get(UPDATE_URL, headers=HEADERS)
     try:
         response = requests.get(f"{UPDATE_URL}/version.txt")
         response.raise_for_status()
         latest_version = response.text.strip()
         current_version = get_current_version()
 
-        if latest_version != current_version:
+        if parse(latest_version) > parse(current_version):
             print(f"New version available: {latest_version}")
             return True, latest_version
         return False, None
@@ -27,14 +28,27 @@ def check_for_updates():
 def apply_update():
     """Download and apply the latest update."""
     try:
-        response = requests.get(f"{UPDATE_URL}/deskcontroller.tar.gz", stream=True)
+        response = requests.get(f"{UPDATE_URL}/DeskController.tar.gz", stream=True)
         response.raise_for_status()
 
-        with open("update.tar.gz", "wb") as f:
-            for chunk in response.iter_content(chunk_size=1024):
-                f.write(chunk)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tar_path = os.path.join(tmp_dir, "update.tar.gz")
+            with open(tar_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=1024):
+                    f.write(chunk)
 
-        os.system("tar -xzf update.tar.gz -C /path/to/installation")
+            with tarfile.open(tar_path, "r:gz") as tar:
+                tar.extractall(tmp_dir)
+
+            # Move files from temporary directory to the installation path
+            for item in os.listdir(tmp_dir):
+                src = os.path.join(tmp_dir, item)
+                dst = os.path.join(INSTALLATION_PATH, item)
+                if os.path.isdir(src):
+                    os.rename(src, dst)
+                else:
+                    os.replace(src, dst)
+
         log_update()
         print("Update applied successfully.")
     except Exception as e:

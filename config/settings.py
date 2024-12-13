@@ -1,18 +1,18 @@
 # config/settings.py
 
-import json
+from dotenv import load_dotenv
 import os
 
-# Load secrets from secrets.json
-secrets_path = os.path.join(os.path.dirname(__file__), "secrets.json")
-with open(secrets_path) as f:
-    secrets = json.load(f)
+load_dotenv('.env')
 
 # Spotify OAuth Credentials
-SPOTIFY_CLIENT_ID = secrets["SPOTIFY_CLIENT_ID"]
-SPOTIFY_CLIENT_SECRET = secrets["SPOTIFY_CLIENT_SECRET"]
-SPOTIFY_REDIRECT_URI = secrets["SPOTIFY_REDIRECT_URI"]
-SPOTIFY_SCOPES = secrets["SPOTIFY_SCOPES"]
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
+SPOTIFY_SCOPES = os.getenv("SPOTIFY_SCOPES")
+
+if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET or not SPOTIFY_REDIRECT_URI or not SPOTIFY_SCOPES:
+    raise EnvironmentError("Missing required environment variables.")
 
 # Default Volume Settings
 DEFAULT_VOLUME = 100  # Default volume level on startup (range: 0 to 100)
