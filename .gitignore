@@ -1,3 +1,4 @@
 /src/spotify_tokens.json
 /images/current_album_art.jpg
 config/.env
+.DS_Store
