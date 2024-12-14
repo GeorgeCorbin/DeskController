@@ -14,7 +14,7 @@ from src.ui.track_info import TrackInfoPanel
 from src.ui.volume_control import VolumeControlPanel
 from src.ui.playback_controls import PlaybackControlPanel
 
-stylesPath = os.path.join(os.path.dirname(__file__), "../styles/style.kv")
+stylesPath = os.path.join(os.path.dirname(__file__), "../../styles/style.kv")
 Builder.load_file(stylesPath) # Adjust the path as needed
 
 class MainScreen(Screen):

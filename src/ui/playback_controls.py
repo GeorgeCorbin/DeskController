@@ -3,8 +3,11 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+import os
 
-Builder.load_file('../styles/style.kv')  # Adjust the path as needed
+# Load the style.kv file
+stylesPath = os.path.join(os.path.dirname(__file__), "../../styles/style.kv")
+Builder.load_file(stylesPath)
 
 class PlaybackControlPanel(BoxLayout):
     def __init__(self, spotify_client, main_screen, **kwargs):

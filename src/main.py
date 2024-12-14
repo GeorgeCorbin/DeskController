@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from src.utils.update_manager import check_for_updates, apply_update
 
 # Load the style.kv file
-stylesPath = os.path.join(os.path.dirname(__file__), "../styles/style.kv")
+stylesPath = os.path.join(os.path.dirname(__file__), "../../styles/style.kv")
 Builder.load_file(stylesPath)
 
 class AudioApp(App):

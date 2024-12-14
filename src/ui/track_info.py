@@ -11,7 +11,9 @@ from kivy.uix.image import Image, AsyncImage
 from kivy.uix.progressbar import ProgressBar
 from kivy.clock import Clock
 
-Builder.load_file('../styles/style.kv')  # Adjust the path as needed
+# Load the style.kv file
+stylesPath = os.path.join(os.path.dirname(__file__), "../../styles/style.kv")
+Builder.load_file(stylesPath)  # Adjust the path as needed
 placeholder = os.path.join(os.path.dirname(__file__), "../assets/images/placeholder.png")
 
 class TrackInfoPanel(BoxLayout):
