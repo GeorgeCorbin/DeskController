@@ -7,7 +7,7 @@ from packaging.version import parse  # For robust version comparison
 
 UPDATE_URL = "https://raw.githubusercontent.com/georgecorbin/DeskController/updates"
 UPDATE_LOG = "update_log.txt"
-INSTALLATION_PATH = "/usr/local/DeskController"
+INSTALLATION_PATH = os.path.join(os.path.dirname(__file__), "../../")
 
 def check_for_updates():
     """Check if a new update is available."""

@@ -12,6 +12,7 @@ from kivy.uix.progressbar import ProgressBar
 from kivy.clock import Clock
 
 Builder.load_file('../styles/style.kv')  # Adjust the path as needed
+placeholder = os.path.join(os.path.dirname(__file__), "../assets/images/placeholder.png")
 
 class TrackInfoPanel(BoxLayout):
     def __init__(self, spotify_client, **kwargs):
@@ -20,7 +21,7 @@ class TrackInfoPanel(BoxLayout):
         self.current_album_art_path = None
 
         # Add album art and track info
-        self.album_art = Image(source="../assets/images/placeholder.png", size=(300, 300), size_hint=(None, None))
+        self.album_art = Image(source=placeholder, size=(300, 300), size_hint=(None, None))
         self.track_label = Label(text="Track Title - Artist", font_size=20, halign="center")
 
         # Center the album art
@@ -72,7 +73,7 @@ class TrackInfoPanel(BoxLayout):
             self.total_time_label.text = self.format_time(track_duration_ms)
         else:
             self.track_label.text = "No track playing"
-            self.album_art.source = "../assets/images/placeholder.png"
+            self.album_art.source = placeholder
             self.progress_bar.value = 0
             self.time_left_label.text = "0:00"
             self.total_time_label.text = "0:00"
@@ -84,7 +85,8 @@ class TrackInfoPanel(BoxLayout):
             self.delete_album_art()
         response = requests.get(url)
         if response.status_code == 200:
-            self.current_album_art_path = "../assets/images/current_album_art.png"
+            self.current_album_art_path = os.path.join(os.path.dirname(__file__), "../../assets/images/current_album_art.png")
+            print(self.current_album_art_path)
             with open(self.current_album_art_path, "wb") as f:
                 f.write(response.content)
             self.album_art.source = self.current_album_art_path
