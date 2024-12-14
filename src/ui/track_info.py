@@ -14,7 +14,7 @@ from kivy.clock import Clock
 # Load the style.kv file
 stylesPath = os.path.join(os.path.dirname(__file__), "../../styles/style.kv")
 Builder.load_file(stylesPath)  # Adjust the path as needed
-placeholder = os.path.join(os.path.dirname(__file__), "../assets/images/placeholder.png")
+placeholder = os.path.join(os.path.dirname(__file__), "../../assets/images/placeholder.png")
 
 class TrackInfoPanel(BoxLayout):
     def __init__(self, spotify_client, **kwargs):
