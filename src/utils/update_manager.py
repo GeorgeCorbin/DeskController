@@ -53,6 +53,9 @@ def apply_update():
 def merge_directories(src_dir, dst_dir):
     """Recursively merge directories and replace files."""
     for item in os.listdir(src_dir):
+        if item == ".git":  # Skip the .git directory
+            continue
+
         src_path = os.path.join(src_dir, item)
         dst_path = os.path.join(dst_dir, item)
 
