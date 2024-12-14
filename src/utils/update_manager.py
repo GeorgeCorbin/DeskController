@@ -6,12 +6,18 @@ from datetime import datetime
 from packaging.version import parse  # For robust version comparison
 import shutil  # For directory and file operations
 
+ENVIRONMENT = os.getenv("ENVIRONMENT", "production").lower()
+ENABLE_UPDATES = ENVIRONMENT == "production"
 UPDATE_URL = "https://raw.githubusercontent.com/georgecorbin/DeskController/updates"
 UPDATE_LOG = "update_log.txt"
 INSTALLATION_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 
 def check_for_updates():
     """Check if a new update is available."""
+    if not ENABLE_UPDATES:
+        print("Updates are disabled.")
+        return False, None
+
     try:
         response = requests.get(f"{UPDATE_URL}/version.txt")
         response.raise_for_status()
